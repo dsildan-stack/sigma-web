@@ -1,0 +1,148 @@
+POLÍTICA DE PRIVACIDADE E PROTEÇÃO DE DADOS
+
+Sistema: [Nome do Sistema]
+Empresa: [Nome da Empresa]
+Versão: 1.0
+Última atualização: [data]
+
+1. OBJETIVO
+
+Esta Política de Privacidade tem como objetivo informar de forma clara e transparente como os dados pessoais de clientes são coletados, utilizados, armazenados e protegidos no sistema [Nome do Sistema], em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 – LGPD).
+
+2. ABRANGÊNCIA
+
+Esta política aplica-se exclusivamente ao uso interno do sistema, sendo ele acessado apenas pelo proprietário da empresa e seus funcionários autorizados, não havendo acesso direto por clientes finais.
+
+3. DADOS PESSOAIS COLETADOS
+
+O sistema poderá armazenar os seguintes dados pessoais de clientes, conforme necessidade operacional:
+
+Nome completo
+
+CPF ou CNPJ
+
+Telefone
+
+E-mail
+
+Endereço
+
+Dados relacionados a faturamento, vendas e histórico comercial
+
+⚠️ O sistema coleta apenas os dados estritamente necessários para fins comerciais, fiscais e operacionais.
+
+4. FINALIDADE DO TRATAMENTO DOS DADOS
+
+Os dados pessoais são utilizados exclusivamente para as seguintes finalidades:
+
+Cadastro de clientes
+
+Emissão de documentos fiscais
+
+Controle de vendas e faturamento
+
+Histórico comercial
+
+Cumprimento de obrigações legais e fiscais
+
+Os dados não são utilizados para fins de marketing externo sem consentimento, nem compartilhados com terceiros para finalidades distintas das aqui descritas.
+
+5. BASE LEGAL PARA O TRATAMENTO
+
+O tratamento de dados pessoais é realizado com base nas seguintes hipóteses legais previstas na LGPD:
+
+Execução de contrato ou de procedimentos preliminares
+
+Cumprimento de obrigação legal ou regulatória
+
+Legítimo interesse do controlador, respeitando os direitos e liberdades do titular
+
+6. ARMAZENAMENTO E SEGURANÇA DOS DADOS
+
+Os dados são armazenados em banco de dados online gerenciado pela plataforma Supabase, utilizando infraestrutura em nuvem com padrões adequados de segurança da informação.
+
+São adotadas medidas técnicas e organizacionais para proteger os dados, incluindo:
+
+Controle de acesso por usuário e senha
+
+Restrição de permissões por função
+
+Conexões seguras (criptografia em trânsito)
+
+Acesso limitado apenas a funcionários autorizados
+
+7. TRANSFERÊNCIA INTERNACIONAL DE DADOS
+
+Os dados poderão ser armazenados em servidores localizados fora do território nacional, conforme a infraestrutura do fornecedor de banco de dados (Supabase).
+
+Essa transferência é realizada em conformidade com a LGPD, garantindo que o fornecedor adote medidas adequadas de segurança e proteção dos dados pessoais.
+
+8. COMPARTILHAMENTO DE DADOS
+
+Os dados pessoais não são compartilhados com terceiros, exceto quando:
+
+Exigido por obrigação legal
+
+Necessário para cumprimento de obrigações fiscais ou regulatórias
+
+Determinado por ordem judicial ou autoridade competente
+
+9. CONTROLE DE ACESSO INTERNO
+
+O acesso ao sistema é restrito a usuários previamente autorizados pela empresa, sendo responsabilidade dos funcionários:
+
+Manter a confidencialidade de suas credenciais
+
+Utilizar os dados apenas para fins profissionais
+
+Não divulgar informações a terceiros não autorizados
+
+O uso indevido poderá resultar em sanções administrativas e legais.
+
+10. DIREITOS DOS TITULARES DOS DADOS
+
+Nos termos da LGPD, o titular dos dados pode, a qualquer momento, solicitar:
+
+Confirmação da existência de tratamento
+
+Acesso aos seus dados
+
+Correção de dados incompletos ou desatualizados
+
+Exclusão ou anonimização dos dados, quando aplicável
+
+Informações sobre o uso e armazenamento dos dados
+
+As solicitações devem ser feitas diretamente à empresa responsável pelo sistema.
+
+11. RETENÇÃO E EXCLUSÃO DOS DADOS
+
+Os dados pessoais serão mantidos pelo período necessário para:
+
+Cumprimento das finalidades descritas
+
+Atendimento a obrigações legais e fiscais
+
+Após esse período, os dados poderão ser excluídos ou anonimizados, conforme a legislação vigente.
+
+12. RESPONSABILIDADE
+
+A empresa [Nome da Empresa] é a Controladora dos Dados Pessoais, sendo responsável pelas decisões referentes ao tratamento das informações.
+
+O desenvolvedor do sistema atua como Operador, não sendo responsável pelo uso indevido dos dados por parte da empresa ou de seus funcionários.
+
+13. ALTERAÇÕES DESTA POLÍTICA
+
+Esta Política de Privacidade poderá ser atualizada a qualquer momento para adequação legal ou melhorias operacionais. A versão mais recente estará sempre disponível internamente no sistema.
+
+14. CONTATO
+
+Para dúvidas ou solicitações relacionadas a dados pessoais, entre em contato com:
+
+Responsável: [Nome do responsável]
+E-mail: [E-mail de contato]
+Telefone: [Telefone]
+
+✔️ Observação final
+
+Este documento atende aos requisitos essenciais da LGPD para sistemas internos de controle comercial e faturamento.

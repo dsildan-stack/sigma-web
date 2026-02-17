@@ -1,0 +1,112 @@
+**TERMO DE CONFIDENCIALIDADE E RESPONSABILIDADE
+
+SOBRE USO DE DADOS E INFORMAÇÕES**
+
+Empresa: [Nome da Empresa]
+Sistema: [Nome do Sistema]
+
+Pelo presente Termo de Confidencialidade e Responsabilidade, o(a) colaborador(a) abaixo identificado(a):
+
+Nome: __________________________________________
+CPF: ___________________________________________
+Cargo/Função: _________________________________
+
+declara estar ciente e de acordo com as condições a seguir:
+
+1. DO OBJETO
+
+Este termo tem por objetivo estabelecer as regras de confidencialidade, sigilo e uso adequado das informações e dados acessados por meio do sistema [Nome do Sistema], utilizados pela empresa [Nome da Empresa], em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 – LGPD).
+
+2. DAS INFORMAÇÕES CONFIDENCIAIS
+
+Consideram-se informações confidenciais, entre outras:
+
+Dados pessoais de clientes (nome, CPF, telefone, e-mail, endereço, etc.)
+
+Informações comerciais, financeiras e fiscais
+
+Dados de faturamento, vendas e histórico de clientes
+
+Informações internas da empresa
+
+Credenciais de acesso ao sistema
+
+Essas informações são de uso exclusivo da empresa e não podem ser divulgadas, compartilhadas ou utilizadas para fins pessoais ou externos.
+
+3. DO USO ADEQUADO DOS DADOS
+
+O(a) colaborador(a) compromete-se a:
+
+Utilizar os dados exclusivamente para fins profissionais
+
+Acessar apenas informações necessárias à sua função
+
+Manter sigilo absoluto sobre quaisquer dados acessados
+
+Não copiar, fotografar, exportar ou repassar informações sem autorização
+
+Não permitir que terceiros utilizem seu acesso ao sistema
+
+4. DO ACESSO AO SISTEMA
+
+O acesso ao sistema é individual e intransferível
+
+O(a) colaborador(a) é responsável por manter a confidencialidade de sua senha
+
+Qualquer suspeita de uso indevido ou acesso não autorizado deve ser comunicada imediatamente à empresa
+
+5. DA PROTEÇÃO E SEGURANÇA
+
+O(a) colaborador(a) compromete-se a adotar boas práticas de segurança, incluindo:
+
+Não deixar o sistema aberto sem supervisão
+
+Não compartilhar senhas
+
+Não utilizar dispositivos ou redes não autorizadas para acesso aos dados
+
+6. DA VIGÊNCIA DO SIGILO
+
+As obrigações de confidencialidade previstas neste termo:
+
+Permanecem válidas durante o vínculo profissional
+
+Continuam válidas após o desligamento, por prazo indeterminado, enquanto as informações não se tornarem públicas por meios legais
+
+7. DAS PENALIDADES
+
+O descumprimento deste termo poderá resultar em:
+
+Medidas disciplinares internas
+
+Responsabilização civil por perdas e danos
+
+Aplicação das penalidades previstas na LGPD
+
+Responsabilização administrativa e judicial, conforme a legislação vigente
+
+8. DA RESPONSABILIDADE LEGAL
+
+O(a) colaborador(a) declara estar ciente de que o uso indevido, vazamento ou divulgação não autorizada de dados pessoais pode gerar responsabilidade legal, inclusive com aplicação de multas e sanções previstas em lei.
+
+9. DISPOSIÇÕES GERAIS
+
+Este termo entra em vigor na data de sua assinatura e é parte integrante das normas internas da empresa.
+
+Ao assinar este documento, o(a) colaborador(a) declara que leu, compreendeu e concorda integralmente com seus termos.
+
+Local e data: ___________________________________
+
+Assinatura do(a) colaborador(a):
+
+Assinatura do responsável pela empresa:
+
+✅ Observação prática
+
+Esse termo:
+
+protege juridicamente o dono da empresa
+
+reduz muito o risco em caso de vazamento
+
+é visto de forma positiva em auditorias e fiscalizações
