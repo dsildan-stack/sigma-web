@@ -79,7 +79,8 @@ const Customers = ({ session }) => {
             aniversario: customer.aniversario || '',
             ultmov: customer.ultmov || '',
             carimbos: customer.carimbos?.toString() || '0',
-            total_pontos: customer.total_pontos?.toString() || '0'
+            total_pontos: customer.total_pontos?.toString() || '0',
+            acumula_pontos_codigo: customer.acumula_pontos_codigo?.toString() || customer.codigo.toString()
         });
         setStatus('Editar');
         setActiveTab('geral');
@@ -94,7 +95,7 @@ const Customers = ({ session }) => {
             codigo: nextCodigo,
             nome: '', endereco: '', bairro: '', cidade: 'São Paulo', estado: 'SP',
             cep: '', aniversario: '', sexo: 'M', telefone: '', celular: '',
-            email: '', ficticio: 'F', acumula_pontos_codigo: '', folha: '',
+            email: '', ficticio: 'F', acumula_pontos_codigo: nextCodigo, folha: '',
             data_cadastro: new Date().toISOString().split('T')[0],
             ultmov: '',
             carimbos: '0', total_pontos: '0',
