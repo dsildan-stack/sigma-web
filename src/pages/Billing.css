@@ -1,0 +1,421 @@
+.billing-container {
+    padding: 1.5rem;
+    padding-bottom: 20rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.billing-container *,
+.billing-container *::before,
+.billing-container *::after {
+    box-sizing: border-box;
+}
+
+.page-header {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.header-info h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #1e293b;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn {
+    padding: 0.7rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #6366f1;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #4f46e5;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.btn-danger-outline {
+    background: white;
+    border: 1px solid #fee2e2;
+    color: #dc2626;
+}
+
+.btn-danger-outline:hover:not(:disabled) {
+    background: #fee2e2;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+}
+
+.form-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+}
+
+.card-client {
+    grid-column: span 12;
+}
+
+.card-service {
+    grid-column: span 8;
+}
+
+.card-payment {
+    grid-column: span 4;
+}
+
+.form-section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #94a3b8;
+    font-weight: 800;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 0.95rem;
+    outline: none;
+    width: 100%;
+}
+
+.form-group input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.form-group input:disabled {
+    background: #f8fafc;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon svg {
+    position: absolute;
+    left: 0.8rem;
+    color: #94a3b8;
+}
+
+.input-with-icon input {
+    padding-left: 2.5rem;
+}
+
+/* Helper width classes */
+.span-1 {
+    grid-column: span 1;
+}
+
+.span-2 {
+    grid-column: span 2;
+}
+
+.span-3 {
+    grid-column: span 3;
+}
+
+.span-4 {
+    grid-column: span 4;
+}
+
+.span-5 {
+    grid-column: span 5;
+}
+
+.span-6 {
+    grid-column: span 6;
+}
+
+.span-7 {
+    grid-column: span 7;
+}
+
+.span-8 {
+    grid-column: span 8;
+}
+
+.span-9 {
+    grid-column: span 9;
+}
+
+.span-10 {
+    grid-column: span 10;
+}
+
+.span-12 {
+    grid-column: span 12;
+}
+
+/* Lookup Dropdowns */
+.lookup-container {
+    position: relative;
+}
+
+.lookup-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    max-height: 250px;
+    overflow-y: auto;
+    margin-top: 4px;
+}
+
+.lookup-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    transition: background 0.2s;
+}
+
+.lookup-item:hover {
+    background: #f8fafc;
+}
+
+.lookup-item .code {
+    font-weight: 700;
+    color: #6366f1;
+    width: 60px;
+}
+
+.lookup-item .name {
+    flex: 1;
+    font-weight: 600;
+}
+
+.lookup-item .extra {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+/* Lookup Grid Variant */
+.lookup-dropdown.lookup-grid {
+    width: 600px;
+    right: auto;
+}
+
+.lookup-grid-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.lookup-grid-table th {
+    text-align: left;
+    background: #f8fafc;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #64748b;
+    position: sticky;
+    top: 0;
+}
+
+.lookup-grid-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.85rem;
+}
+
+.lookup-grid-table tr.clickable-row:hover {
+    background: #f1f5f9;
+    cursor: pointer;
+}
+
+/* Payment Summary Stats */
+.summary-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.summary-row:last-child {
+    margin-bottom: 0;
+    padding-top: 0.5rem;
+    border-top: 1px dashed #cbd5e1;
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 1rem;
+}
+
+.payment-badge {
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge-px {
+    background: #dcfce7;
+    color: #166534;
+}
+
+/* Pix */
+.badge-dn {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* Dinheiro */
+.badge-cc {
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+/* Card */
+
+/* Voucher Warning */
+.voucher-alert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #fffbeb;
+    border: 1px solid #fef3c7;
+    border-radius: 12px;
+    color: #92400e;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}
+
+.voucher-alert svg {
+    font-size: 1.25rem;
+    color: #f59e0b;
+}
+
+/* Points Info */
+.points-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #eff6ff;
+    color: #1d4ed8;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Status Badge */
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-active {
+    background: #22c55e;
+}
+
+.status-pending {
+    background: #f59e0b;
+}
+
+@media (max-width: 1024px) {
+
+    .card-service,
+    .card-payment {
+        grid-column: span 12;
+    }
+}
+
+/* Drop Up Variant for bottom elements */
+.lookup-container.drop-up .lookup-dropdown {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 4px;
+    box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e2e8f0;
+    border-top: 1px solid #e2e8f0;
+}

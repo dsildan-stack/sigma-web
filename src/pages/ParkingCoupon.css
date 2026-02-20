@@ -1,0 +1,371 @@
+.parking-coupon-container {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.coupon-form-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.form-header {
+    margin-bottom: 2rem;
+}
+
+.form-header h1 {
+    font-size: 1.5rem;
+    color: #1e293b;
+    margin: 0;
+}
+
+.form-header .subtitle {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.coupon-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group.span-4 {
+    grid-column: span 4;
+}
+
+.form-group.span-8 {
+    grid-column: span 8;
+}
+
+.form-group.span-12 {
+    grid-column: span 12;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #475569;
+}
+
+.form-group input {
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.form-group input.readonly-field {
+    background-color: #f8fafc;
+    cursor: default;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.btn-primary {
+    background-color: #6366f1;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #4f46e5;
+}
+
+.btn-primary:disabled {
+    background-color: #a5b4fc;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.btn-secondary:hover {
+    background-color: #e2e8f0;
+}
+
+.btn-search {
+    background-color: #0ea5e9;
+    color: white;
+}
+
+.btn-search:hover {
+    background-color: #0284c7;
+}
+
+/* Product Lookup Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #64748b;
+}
+
+.search-results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.search-item {
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    transition: all 0.2s;
+}
+
+.search-item:hover {
+    border-color: #6366f1;
+    background-color: #f5f3ff;
+}
+
+.search-item .item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.search-item .item-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-item .item-code {
+    font-weight: 600;
+    color: #6366f1;
+}
+
+.search-item .item-currency-code {
+    font-size: 0.75rem;
+    color: #475569;
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.search-item .item-name {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.search-item .item-price {
+    font-weight: 600;
+    color: #059669;
+}
+
+/* Autocomplete Dropdown */
+.autocomplete-container {
+    position: relative;
+}
+
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    margin-top: 0.25rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.2s;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f8fafc;
+}
+
+.suggestion-item .item-main {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+}
+
+.suggestion-item .code {
+    font-weight: 600;
+    color: #6366f1;
+}
+
+.suggestion-item .currency {
+    font-size: 0.75rem;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.suggestion-item .item-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8125rem;
+}
+
+.suggestion-item .name {
+    color: #475569;
+}
+
+.suggestion-item .price {
+    font-weight: 600;
+    color: #059669;
+}
+
+/* Print Styling - 58mm Thermal Printer */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #thermal-coupon,
+    #thermal-coupon * {
+        visibility: visible;
+    }
+
+    #thermal-coupon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 58mm;
+        padding: 5mm;
+        background: white;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 10pt;
+        line-height: 1.2;
+        color: black;
+    }
+
+    .sidebar,
+    .sigma-sidebar,
+    .page-header,
+    .search-bar,
+    .form-card,
+    .btn {
+        display: none !important;
+    }
+
+    @page {
+        margin: 0;
+        size: 58mm auto;
+    }
+}
+
+#thermal-coupon {
+    display: none;
+    /* Hidden during normal viewing */
+}
+
+.coupon-header {
+    text-align: center;
+    margin-bottom: 5mm;
+    font-weight: bold;
+}
+
+.coupon-divider {
+    border-top: 1px dashed black;
+    margin: 3mm 0;
+}
+
+.coupon-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2mm;
+}
+
+.coupon-footer {
+    text-align: center;
+    margin-top: 5mm;
+    font-size: 8pt;
+}
+
+.text-bold {
+    font-weight: bold;
+}

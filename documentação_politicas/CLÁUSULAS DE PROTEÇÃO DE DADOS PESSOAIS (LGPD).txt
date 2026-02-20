@@ -1,0 +1,124 @@
+CLÁUSULAS DE PROTEÇÃO DE DADOS PESSOAIS (LGPD)
+1. DAS DEFINIÇÕES
+
+Para fins destas cláusulas, aplicam-se as definições da Lei nº 13.709/2018 (Lei Geral de Proteção de Dados – LGPD), especialmente:
+
+Controlador: a CONTRATANTE, responsável pelas decisões referentes ao tratamento de dados pessoais.
+
+Operador: o CONTRATADO (DESENVOLVEDOR), que realiza o tratamento de dados pessoais conforme as instruções da CONTRATANTE.
+
+Dados Pessoais: qualquer informação relacionada a pessoa natural identificada ou identificável.
+
+2. DO PAPEL DAS PARTES
+
+A CONTRATANTE declara estar ciente de que:
+
+a) É a única e exclusiva CONTROLADORA dos dados pessoais tratados por meio do sistema objeto deste contrato;
+b) Define as finalidades, bases legais e forma de utilização dos dados pessoais;
+c) O CONTRATADO atua exclusivamente como OPERADOR, não tomando decisões sobre o uso dos dados.
+
+3. DA RESPONSABILIDADE PELO TRATAMENTO DOS DADOS
+
+Compete exclusivamente à CONTRATANTE:
+
+Obter, quando necessário, o consentimento dos titulares dos dados;
+
+Informar os titulares sobre o tratamento de seus dados;
+
+Garantir que o tratamento esteja amparado por base legal válida;
+
+Atender solicitações dos titulares (acesso, correção, exclusão, etc.);
+
+Definir prazos de retenção e exclusão dos dados.
+
+O CONTRATADO não será responsável por qualquer tratamento de dados realizado em desacordo com a LGPD por decisão ou ação da CONTRATANTE ou de seus funcionários.
+
+4. DO USO DO SISTEMA E ACESSO AOS DADOS
+
+O CONTRATADO:
+
+a) Não possui acesso rotineiro, permanente ou operacional aos dados pessoais armazenados no sistema;
+b) Somente acessará dados pessoais quando estritamente necessário para suporte técnico, manutenção ou correção de falhas, mediante solicitação ou autorização da CONTRATANTE;
+c) Não utilizará os dados para qualquer finalidade diversa da execução contratual.
+
+5. DO ARMAZENAMENTO EM INFRAESTRUTURA DE TERCEIROS
+
+A CONTRATANTE declara ciência de que o sistema utiliza infraestrutura de banco de dados em nuvem, operada por terceiros (ex.: Supabase), podendo haver armazenamento de dados em servidores localizados fora do território nacional.
+
+A escolha do fornecedor de infraestrutura e a aceitação de seus termos são de responsabilidade da CONTRATANTE, que reconhece que tais provedores adotam medidas de segurança compatíveis com padrões internacionais.
+
+6. DA SEGURANÇA DA INFORMAÇÃO
+
+O CONTRATADO compromete-se a empregar boas práticas de segurança da informação no desenvolvimento do sistema, incluindo:
+
+Uso de conexões seguras;
+
+Controle de acesso lógico;
+
+Estrutura adequada de autenticação e permissões.
+
+Contudo, o CONTRATADO não se responsabiliza por falhas de segurança decorrentes de:
+
+Uso inadequado do sistema;
+
+Compartilhamento de credenciais;
+
+Ações de funcionários da CONTRATANTE;
+
+Configurações incorretas realizadas pela CONTRATANTE;
+
+Incidentes originados na infraestrutura de terceiros.
+
+7. DE INCIDENTES DE SEGURANÇA
+
+Em caso de incidente de segurança que envolva dados pessoais:
+
+O CONTRATADO comunicará a CONTRATANTE quando tiver ciência de incidente relacionado diretamente ao sistema;
+
+Caberá exclusivamente à CONTRATANTE avaliar a necessidade de comunicação à Autoridade Nacional de Proteção de Dados (ANPD) e aos titulares dos dados, conforme a LGPD.
+
+8. DA ISENÇÃO DE RESPONSABILIDADE DO CONTRATADO
+
+O CONTRATADO não será responsabilizado por:
+
+Multas, sanções ou penalidades aplicadas com base na LGPD;
+
+Uso indevido de dados por funcionários ou terceiros ligados à CONTRATANTE;
+
+Falta de políticas internas, treinamentos ou controles administrativos da CONTRATANTE;
+
+Tratamento de dados realizado fora do escopo técnico do sistema.
+
+9. DA VIGÊNCIA DAS OBRIGAÇÕES
+
+As disposições relativas à proteção de dados permanecem válidas:
+
+Durante toda a vigência do contrato;
+
+Após o seu término, no que couber às obrigações legais aplicáveis.
+
+10. DISPOSIÇÕES FINAIS
+
+A CONTRATANTE declara que:
+
+Leu e compreendeu as cláusulas relacionadas à proteção de dados;
+
+Está ciente de suas responsabilidades como Controladora;
+
+Assume integral responsabilidade pelo tratamento dos dados pessoais realizados por meio do sistema.
+
+✅ Dica prática (experiência real)
+
+Essas cláusulas:
+
+te blindam juridicamente como desenvolvedor
+
+deixam claro que você não é o dono do problema
+
+são suficientes para contratos de pequeno e médio porte
+
+funcionam muito bem junto com:
+
+Política de Privacidade
+
+Termo de Confidencialidade dos Funcionários
