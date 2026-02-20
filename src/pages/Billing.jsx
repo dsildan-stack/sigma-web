@@ -1042,7 +1042,7 @@ const Billing = ({ session }) => {
                         </div>
                         <div className="form-group span-3">
                             <label>Valor Serviço</label>
-                            <input type="number" value={formData.value_primary} onChange={(e) => setFormData(prev => ({ ...prev, value_primary: e.target.value }))} />
+                            <input type="number" value={formData.value_primary} onChange={(e) => setFormData(prev => ({ ...prev, value_primary: e.target.value, service_value: e.target.value }))} />
                         </div>
                     </div>
 
@@ -1169,10 +1169,14 @@ const Billing = ({ session }) => {
                                             setFormData(prev => ({
                                                 ...prev,
                                                 service_value: val,
-                                                value_primary: val // Also update value_primary as it usually reflects the total to be paid
+                                                value_primary: val
                                             }));
                                         } else if (formData.currency_primary === 'DD') {
-                                            setFormData(prev => ({ ...prev, service_value: '0.00' }));
+                                            setFormData(prev => ({
+                                                ...prev,
+                                                service_value: prev.base_value,
+                                                value_primary: prev.base_value
+                                            }));
                                         }
                                     }
 

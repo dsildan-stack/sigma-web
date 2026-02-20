@@ -14,6 +14,8 @@ import MassageVoucher from './pages/MassageVoucher'
 import TherapistDailyBalance from './pages/TherapistDailyBalance'
 import ParkingCoupon from './pages/ParkingCoupon'
 import AuditReport from './pages/AuditReport'
+import Pontuador from './pages/Pontuador'
+import ClientTransfer from './pages/ClientTransfer'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 
@@ -59,6 +61,8 @@ function App() {
             case 'saldo-dia': return <TherapistDailyBalance session={session} />;
             case 'estacionamento': return <ParkingCoupon session={session} />;
             case 'auditoria': return <AuditReport />;
+            case 'pontuador': return <Pontuador session={session} />;
+            case 'transferencia': return <ClientTransfer session={session} />;
             default: return (
                 <div style={{ padding: '2rem' }}>
                     <h1>Painel SIGMA</h1>
