@@ -254,20 +254,19 @@ const Products = ({ session }) => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                    {searchTerm && products.length > 0 && (
+                        <div className="search-results">
+                            {products.map(p => (
+                                <div key={p.id} className="result-item" onClick={() => handleSelectProduct(p)}>
+                                    <span className="res-code">{p.codigo}</span>
+                                    <span className="res-name">{p.nome}</span>
+                                    <span className="res-price">R$ {p.preco.toFixed(2)}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
-
-            {searchTerm && products.length > 0 && (
-                <div className="search-results">
-                    {products.map(p => (
-                        <div key={p.id} className="result-item" onClick={() => handleSelectProduct(p)}>
-                            <span className="res-code">{p.codigo}</span>
-                            <span className="res-name">{p.nome}</span>
-                            <span className="res-price">R$ {p.preco.toFixed(2)}</span>
-                        </div>
-                    ))}
-                </div>
-            )}
 
             <div className="form-card main-form">
                 <div className="form-grid">

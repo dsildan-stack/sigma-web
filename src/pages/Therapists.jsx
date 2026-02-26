@@ -222,24 +222,23 @@ const Therapists = ({ session }) => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                    {searchTerm && therapists.length > 0 && (
+                        <div className="search-results">
+                            {therapists.map(t => (
+                                <div key={t.id} className="result-item" onClick={() => handleSelectTherapist(t)}>
+                                    <span className="res-code">{t.codigo}</span>
+                                    <span className="res-name">{t.nome}</span>
+                                    <span className="res-phone">{t.celular || t.telefone}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
                 <div className="navigation-controls">
                     <button className="nav-btn"><FiChevronLeft /></button>
                     <button className={`nav-btn ${loading ? 'spinning' : ''}`}><FiChevronRight /></button>
                 </div>
             </div>
-
-            {searchTerm && therapists.length > 0 && (
-                <div className="search-results">
-                    {therapists.map(t => (
-                        <div key={t.id} className="result-item" onClick={() => handleSelectTherapist(t)}>
-                            <span className="res-code">{t.codigo}</span>
-                            <span className="res-name">{t.nome}</span>
-                            <span className="res-phone">{t.celular || t.telefone}</span>
-                        </div>
-                    ))}
-                </div>
-            )}
 
             <div className="form-card">
                 <div className="form-grid">

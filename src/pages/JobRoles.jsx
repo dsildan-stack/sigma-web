@@ -159,23 +159,22 @@ const JobRoles = ({ session }) => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                    {searchTerm && roles.length > 0 && (
+                        <div className="search-results">
+                            {roles.map(r => (
+                                <div key={r.id} className="result-item" onClick={() => handleSelectRole(r)}>
+                                    <span className="res-code">{r.codigo}</span>
+                                    <span className="res-name">{r.descricao}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
                 <div className="navigation-controls">
                     <button className="nav-btn"><FiChevronLeft /></button>
                     <button className={`nav-btn ${loading ? 'spinning' : ''}`}><FiChevronRight /></button>
                 </div>
             </div>
-
-            {searchTerm && roles.length > 0 && (
-                <div className="search-results">
-                    {roles.map(r => (
-                        <div key={r.id} className="result-item" onClick={() => handleSelectRole(r)}>
-                            <span className="res-code">{r.codigo}</span>
-                            <span className="res-name">{r.descricao}</span>
-                        </div>
-                    ))}
-                </div>
-            )}
 
             <div className="form-card">
                 <div className="form-grid">

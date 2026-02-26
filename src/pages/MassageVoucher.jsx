@@ -27,7 +27,8 @@ const MassageVoucher = ({ session }) => {
         cliente_compra: '',
         cliente_massagem: '',
         pix_therapist_code: '',
-        pix_therapist_name: ''
+        pix_therapist_name: '',
+        tipo_venda: 'Venda Massagem'
     });
 
     // --- Refs ---
@@ -284,6 +285,19 @@ const MassageVoucher = ({ session }) => {
 
             alert('Vale Massagem gravado com sucesso!');
 
+            // Generate JPEG image (New functionality)
+            try {
+                await gerarImagemVoucher(
+                    formData.cliente_compra,
+                    formData.num_ctr,
+                    formData.valor,
+                    formData.tipo_venda
+                );
+            } catch (err) {
+                console.error('Erro ao gerar imagem:', err);
+                alert('Erro ao gerar imagem do voucher, mas os dados foram salvos.');
+            }
+
             // Generate receipt
             generateReceipt();
 
@@ -295,6 +309,71 @@ const MassageVoucher = ({ session }) => {
         } finally {
             setLoading(false);
         }
+    };
+
+    // --- Generate Voucher Image (Delphi Implementation) ---
+    const gerarImagemVoucher = async (nomeCliente, numCtr, valorMas, tipoVenda) => {
+        return new Promise((resolve) => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            // Set source based on sale type
+            let src = '/assets/vouchers/Massagem.jpg';
+            if (tipoVenda === 'Promoção') {
+                src = '/assets/vouchers/Promocao_Massagem.jpg';
+            }
+
+            img.onload = () => {
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                // 1. Draw background
+                ctx.drawImage(img, 0, 0);
+
+                // 2. Configuration
+                ctx.font = 'bold 24px Arial';
+                ctx.fillStyle = 'black';
+                ctx.textAlign = 'left';
+
+                // 3. Write Info (Offsets adapted for 800px width)
+                ctx.fillText(`Nº : ${numCtr}`, 400, 120);
+                ctx.fillText(`Para : ${nomeCliente}`, 400, 170);
+                ctx.fillText(`Massagem de : ${valorMas}`, 400, 230);
+
+                // 4. Save and Download
+                const link = document.createElement('a');
+                link.download = `Vale_${numCtr}_${nomeCliente.replace(/\s+/g, '_')}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.9);
+                link.click();
+                resolve();
+            };
+
+            img.onerror = () => {
+                // Fallback: draw a basic voucher if image fails to load
+                canvas.width = 800;
+                canvas.height = 400;
+                ctx.fillStyle = '#f8f9fa';
+                ctx.fillRect(0, 0, 800, 400);
+                ctx.strokeStyle = '#dee2e6';
+                ctx.lineWidth = 10;
+                ctx.strokeRect(5, 5, 790, 390);
+
+                ctx.font = 'bold 24px Arial';
+                ctx.fillStyle = '#333';
+                ctx.fillText(`Nº : ${numCtr}`, 400, 120);
+                ctx.fillText(`Para : ${nomeCliente}`, 400, 170);
+                ctx.fillText(`Massagem de : ${valorMas}`, 400, 230);
+
+                const link = document.createElement('a');
+                link.download = `Vale_${numCtr}_${nomeCliente.replace(/\s+/g, '_')}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.9);
+                link.click();
+                resolve();
+            };
+
+            img.src = src;
+        });
     };
 
     // --- Generate Receipt ---
@@ -447,6 +526,33 @@ Obrigado volte sempre!
                                 value={formData.data_vencimento}
                                 onChange={(e) => setFormData(prev => ({ ...prev, data_vencimento: e.target.value }))}
                             />
+                        </div>
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group span-6">
+                            <label>Tipo de Venda</label>
+                            <div className="radio-group" style={{ display: 'flex', gap: '20px', marginTop: '10px' }}>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                    <input
+                                        type="radio"
+                                        name="tipo_venda"
+                                        value="Venda Massagem"
+                                        checked={formData.tipo_venda === 'Venda Massagem'}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, tipo_venda: e.target.value }))}
+                                    />
+                                    Venda Normal
+                                </label>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                    <input
+                                        type="radio"
+                                        name="tipo_venda"
+                                        value="Promoção"
+                                        checked={formData.tipo_venda === 'Promoção'}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, tipo_venda: e.target.value }))}
+                                    />
+                                    Promoção
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>

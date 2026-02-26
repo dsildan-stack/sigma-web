@@ -147,14 +147,18 @@
 }
 
 .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
     background: white;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    margin-bottom: 1.5rem;
+    margin-top: 5px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     max-height: 400px;
     overflow-y: auto;
-    z-index: 10;
+    z-index: 100;
 }
 
 .result-item {

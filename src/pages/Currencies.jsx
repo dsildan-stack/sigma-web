@@ -208,20 +208,19 @@ const Currencies = ({ session }) => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                    {searchTerm && currencies.length > 0 && (
+                        <div className="search-results">
+                            {currencies.map((c, idx) => (
+                                <div key={`${c.product_code}-${c.currency_code}-${idx}`} className="result-item" onClick={() => handleSelectCurrency(c)}>
+                                    <span className="res-code">{c.currency_code}</span>
+                                    <span className="res-name">{c.currency_name} ({c.product_name})</span>
+                                    <span className="res-val">R$ {c.valor.toFixed(2)}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
-
-            {searchTerm && currencies.length > 0 && (
-                <div className="search-results">
-                    {currencies.map((c, idx) => (
-                        <div key={`${c.product_code}-${c.currency_code}-${idx}`} className="result-item" onClick={() => handleSelectCurrency(c)}>
-                            <span className="res-code">{c.currency_code}</span>
-                            <span className="res-name">{c.currency_name} ({c.product_name})</span>
-                            <span className="res-val">R$ {c.valor.toFixed(2)}</span>
-                        </div>
-                    ))}
-                </div>
-            )}
 
             <div className="form-card">
                 <div className="form-grid">

@@ -172,20 +172,19 @@ const Stores = ({ session }) => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                    {searchTerm && stores.length > 0 && (
+                        <div className="search-results">
+                            {stores.map(store => (
+                                <div key={store.codigo} className="result-item" onClick={() => handleSelectStore(store)}>
+                                    <span className="res-code">{store.codigo}</span>
+                                    <span className="res-name">{store.nome}</span>
+                                    <span className="res-city">{store.cidade} - {store.estado}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
-
-            {searchTerm && stores.length > 0 && (
-                <div className="search-results">
-                    {stores.map(store => (
-                        <div key={store.codigo} className="result-item" onClick={() => handleSelectStore(store)}>
-                            <span className="res-code">{store.codigo}</span>
-                            <span className="res-name">{store.nome}</span>
-                            <span className="res-city">{store.cidade} - {store.estado}</span>
-                        </div>
-                    ))}
-                </div>
-            )}
 
             <div className="form-card">
                 <div className="form-grid">

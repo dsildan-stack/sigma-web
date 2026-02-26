@@ -52,15 +52,34 @@ const Customers = ({ session }) => {
     }, [searchTerm]);
 
     const fetchCustomers = async () => {
-        let query = supabase.from('customers').select('*');
-        if (searchTerm) {
-            if (!isNaN(searchTerm)) {
-                query = query.or(`codigo.eq.${searchTerm},telefone.ilike.%${searchTerm}%,celular.ilike.%${searchTerm}%`);
-            } else {
-                query = query.or(`nome.ilike.%${searchTerm}%,telefone.ilike.%${searchTerm}%,celular.ilike.%${searchTerm}%`);
-            }
+        const trimmedTerm = searchTerm.trim();
+
+        if (!trimmedTerm) {
+            setCustomers([]);
+            return;
         }
-        const { data, error } = await query.limit(100);
+
+        let queryStr = "";
+        if (!isNaN(trimmedTerm)) {
+            // Se for número, busca por código exato ou telefone/celular parcial
+            queryStr = `codigo.eq.${trimmedTerm},telefone.ilike.%${trimmedTerm}%,celular.ilike.%${trimmedTerm}%`;
+        } else {
+            // Se for texto, busca por nome, telefone ou celular parcial
+            queryStr = `nome.ilike.%${trimmedTerm}%,telefone.ilike.%${trimmedTerm}%,celular.ilike.%${trimmedTerm}%`;
+        }
+
+        const { data, error } = await supabase
+            .from('customers')
+            .select('*')
+            .or(queryStr)
+            .limit(100);
+
+        if (error) {
+            console.error('Erro ao buscar clientes:', error);
+            alert('Erro na pesquisa: ' + error.message);
+            return;
+        }
+
         if (data) setCustomers(data);
     };
 
@@ -264,24 +283,23 @@ const Customers = ({ session }) => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                    {searchTerm && customers.length > 0 && (
+                        <div className="search-results">
+                            {customers.map(c => (
+                                <div key={c.id} className="result-item" onClick={() => { handleSelectCustomer(c); setSearchTerm(''); }}>
+                                    <span className="res-code">{c.codigo}</span>
+                                    <span className="res-name">{c.nome}</span>
+                                    <span className="res-phone">{c.telefone || c.celular}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
                 <div className="navigation-controls">
                     <button className="nav-btn"><FiChevronLeft /></button>
                     <button className={`nav-btn ${loading ? 'spinning' : ''}`}><FiChevronRight /></button>
                 </div>
             </div>
-
-            {searchTerm && customers.length > 0 && (
-                <div className="search-results">
-                    {customers.map(c => (
-                        <div key={c.id} className="result-item" onClick={() => { handleSelectCustomer(c); setSearchTerm(''); }}>
-                            <span className="res-code">{c.codigo}</span>
-                            <span className="res-name">{c.nome}</span>
-                            <span className="res-phone">{c.telefone || c.celular}</span>
-                        </div>
-                    ))}
-                </div>
-            )}
 
             <div className="form-card">
                 <div className="form-tabs">
