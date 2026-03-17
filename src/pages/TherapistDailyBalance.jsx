@@ -156,20 +156,12 @@ const TherapistDailyBalance = ({ session }) => {
             let finalAjuste1 = tAjustes;
             let observacaoFinal = tAjustes !== 0 ? formData.observacao : 'Lançamento-Comissão Manual';
 
-            // Special Signal Logic using banco_caixa
+            // Special Signal Logic (Corrected: Origin is always negative adjustment for all scenarios)
             if (tAjustes > 0) {
-                // If origin is "Banco/Caixa" and dest is NOT "Banco/Caixa" -> AJUSTE IS NEGATIVE for origin
-                if (formData.t1_banco_caixa === 'Sim' && formData.t2_banco_caixa !== 'Sim') {
-                    finalAjuste1 = tAjustes * -1;
-                } else if (formData.t1_banco_caixa !== 'Sim' && formData.t2_banco_caixa === 'Sim') {
-                    finalAjuste1 = tAjustes;
-                } else if (formData.t1_banco_caixa !== 'Sim' && formData.t2_banco_caixa !== 'Sim') {
-                    // Both not "Banco/Caixa" -> Adjustment is negative for origin
-                    finalAjuste1 = tAjustes * -1;
-                }
+                finalAjuste1 = tAjustes * -1;
             }
 
-            const saldoDia1 = tAjustes !== 0 ? finalAjuste1 : (tComissao - tPix + tCaixinha);
+            const saldoDia1 = (tComissao - tPix + tCaixinha - finalAjuste1);
             const saldoTotal1 = await calculateSaldoTotal(parseInt(formData.t1_codigo), saldoDia1);
 
             const record1 = {
@@ -191,15 +183,9 @@ const TherapistDailyBalance = ({ session }) => {
 
             // PART 2: Save Second Therapist (Destination) if adjustment > 0
             if (tAjustes > 0) {
-                let finalAjuste2 = tAjustes;
-                // In Delphi, the second passage sign logic:
-                if (formData.t1_banco_caixa === 'Sim' && formData.t2_banco_caixa !== 'Sim') {
-                    finalAjuste2 = tAjustes * -1; // Negative
-                } else {
-                    finalAjuste2 = tAjustes; // Positive
-                }
+                let finalAjuste2 = tAjustes; // Always positive for destination
 
-                const saldoDia2 = finalAjuste2;
+                const saldoDia2 = finalAjuste2 * -1; // Daily balance is negative
                 const saldoTotal2 = await calculateSaldoTotal(parseInt(formData.t2_codigo), saldoDia2);
 
                 const record2 = {

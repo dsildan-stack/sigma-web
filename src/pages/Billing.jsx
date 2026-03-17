@@ -1384,6 +1384,17 @@ const Billing = ({ session }) => {
                             <span>Utiliza <strong>{formData.points_neg} pontos</strong> de fidelidade.</span>
                         </div>
                     )}
+
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+                        <button
+                            className="btn btn-primary"
+                            onClick={handleGravar}
+                            disabled={loading || saveDisabled}
+                            style={{ width: '100%', padding: '1rem', fontSize: '1.1rem' }}
+                        >
+                            <FiSave /> {loading ? 'Gravando...' : 'Gravar Faturamento'}
+                        </button>
+                    </div>
                 </div>
             </div >
 
