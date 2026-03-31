@@ -285,14 +285,9 @@ const MassageVoucher = ({ session }) => {
 
             alert('Vale Massagem gravado com sucesso!');
 
-            // Generate JPEG image (New functionality)
+            // Generate JPEG image
             try {
-                await gerarImagemVoucher(
-                    formData.cliente_compra,
-                    formData.num_ctr,
-                    formData.valor,
-                    formData.tipo_venda
-                );
+                await gerarImagemVoucher();
             } catch (err) {
                 console.error('Erro ao gerar imagem:', err);
                 alert('Erro ao gerar imagem do voucher, mas os dados foram salvos.');
@@ -311,17 +306,19 @@ const MassageVoucher = ({ session }) => {
         }
     };
 
-    // --- Generate Voucher Image (Delphi Implementation) ---
-    const gerarImagemVoucher = async (nomeCliente, numCtr, valorMas, tipoVenda) => {
+    // --- Generate Voucher Image ---
+    const gerarImagemVoucher = async () => {
         return new Promise((resolve) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
 
+            const tipoVenda = formData.tipo_venda;
+            
             // Set source based on sale type
-            let src = '/assets/vouchers/Massagem.jpg';
+            let src = '/Imagens/ValeNormal/Massagem.jpg';
             if (tipoVenda === 'Promoção') {
-                src = '/assets/vouchers/Promocao_Massagem.jpg';
+                src = '/Imagens/Promoção/Massagem.jpg';
             }
 
             img.onload = () => {
@@ -332,43 +329,63 @@ const MassageVoucher = ({ session }) => {
                 ctx.drawImage(img, 0, 0);
 
                 // 2. Configuration
-                ctx.font = 'bold 24px Arial';
+                ctx.font = 'bold 40px Arial';
                 ctx.fillStyle = 'black';
                 ctx.textAlign = 'left';
 
-                // 3. Write Info (Offsets adapted for 800px width)
-                ctx.fillText(`Nº : ${numCtr}`, 400, 120);
-                ctx.fillText(`Para : ${nomeCliente}`, 400, 170);
-                ctx.fillText(`Massagem de : ${valorMas}`, 400, 230);
+                // Helper method for text with white background
+                const drawTextWithBg = (text, x, y) => {
+                    const str = text || '';
+                    if (!str.trim()) return;
+                    
+                    const metrics = ctx.measureText(str);
+                    const width = metrics.width;
+                    const paddingX = 15;
+                    const paddingTop = 35; // Espaço para cima da linha base (ascendentes)
+                    const paddingBottom = 10; // Espaço para baixo da linha base (descendentes)
+                    
+                    // Desenhar caixa de fundo branco
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(x - paddingX, y - paddingTop, width + (paddingX * 2), paddingTop + paddingBottom);
+                    
+                    // Desenhar texto preto
+                    ctx.fillStyle = 'black';
+                    ctx.fillText(str, x, y);
+                };
+
+                // 3. Write Info
+                if (tipoVenda === 'Promoção') {
+                    const now = new Date();
+                    const dataAtual = now.toLocaleDateString('pt-BR');
+                    
+                    let dataVencFormatada = '';
+                    if (formData.data_vencimento) {
+                        const [ano, mes, dia] = formData.data_vencimento.split('-');
+                        dataVencFormatada = `${dia}/${mes}/${ano}`;
+                    }
+
+                    // Cliente: (Cliente Compra)
+                    drawTextWithBg(formData.cliente_compra, 450, 550);
+                    // Dt. compra: (Data Atual)
+                    drawTextWithBg(dataAtual, 640, 680);
+                    // Agendado: (Data Vencimento)
+                    drawTextWithBg(dataVencFormatada, 610, 830);
+                } else {
+                    drawTextWithBg(formData.cliente_massagem, 830, 470);
+                    drawTextWithBg(formData.cliente_compra, 770, 660);
+                    drawTextWithBg(formData.produto_nome, 400, 890);
+                }
 
                 // 4. Save and Download
                 const link = document.createElement('a');
-                link.download = `Vale_${numCtr}_${nomeCliente.replace(/\s+/g, '_')}.jpg`;
+                link.download = `Vale_${formData.num_ctr}_${(formData.cliente_massagem || 'Voucher').replace(/\s+/g, '_')}.jpg`;
                 link.href = canvas.toDataURL('image/jpeg', 0.9);
                 link.click();
                 resolve();
             };
 
             img.onerror = () => {
-                // Fallback: draw a basic voucher if image fails to load
-                canvas.width = 800;
-                canvas.height = 400;
-                ctx.fillStyle = '#f8f9fa';
-                ctx.fillRect(0, 0, 800, 400);
-                ctx.strokeStyle = '#dee2e6';
-                ctx.lineWidth = 10;
-                ctx.strokeRect(5, 5, 790, 390);
-
-                ctx.font = 'bold 24px Arial';
-                ctx.fillStyle = '#333';
-                ctx.fillText(`Nº : ${numCtr}`, 400, 120);
-                ctx.fillText(`Para : ${nomeCliente}`, 400, 170);
-                ctx.fillText(`Massagem de : ${valorMas}`, 400, 230);
-
-                const link = document.createElement('a');
-                link.download = `Vale_${numCtr}_${nomeCliente.replace(/\s+/g, '_')}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.9);
-                link.click();
+                alert(`Não foi possível carregar o modelo de imagem em: ${src}`);
                 resolve();
             };
 

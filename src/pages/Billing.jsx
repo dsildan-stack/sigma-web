@@ -675,7 +675,9 @@ const Billing = ({ session }) => {
                     saldo_total: newSaldoTotal,
                     data: formData.data_movimento,
                     hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-                    observacao: 'Faturamento - Massagem'
+                    observacao: 'Faturamento - Massagem',
+                    cliente: formData.client_name,
+                    servico: formData.product_name
                 }]);
             } else {
                 // Record 1: Original Therapist (Comissao + Caixinha, PIX = 0)
@@ -701,7 +703,9 @@ const Billing = ({ session }) => {
                     saldo_total: newSaldoTotal1,
                     data: formData.data_movimento,
                     hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-                    observacao: 'Faturamento - Massagem (Split PIX)'
+                    observacao: 'Faturamento - Massagem (Split PIX)',
+                    cliente: formData.client_name,
+                    servico: formData.product_name
                 }]);
 
                 // Record 2: PIX Therapist (Comissao = 0, Caixinha = 0, PIX = Total PIX)
@@ -727,7 +731,9 @@ const Billing = ({ session }) => {
                     saldo_total: newSaldoTotal2,
                     data: formData.data_movimento,
                     hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-                    observacao: `PIX Faturamento - Original: ${formData.therapist_code}`
+                    observacao: `PIX Faturamento - Original: ${formData.therapist_code}`,
+                    cliente: formData.client_name,
+                    servico: formData.product_name
                 }]);
             }
 

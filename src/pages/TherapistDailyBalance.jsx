@@ -1,18 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './TherapistDailyBalance.css';
 import {
-    FiSave, FiTrash2, FiSearch, FiPlus,
+    FiSave, FiTrash2, FiSearch, FiPlus, FiX,
     FiUser, FiDollarSign, FiCalendar, FiFileText,
     FiCornerDownRight, FiInfo, FiLayers
 } from 'react-icons/fi';
 import { supabase } from '../utils/supabase';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const TherapistDailyBalance = ({ session }) => {
     // --- UI/Progress State ---
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState([]);
-    const [searchMode, setSearchMode] = useState(null); // T1 | T2
+    const [searchMode, setSearchMode] = useState(null); // T1 | T2 | T3 | T4
     const [closings, setClosings] = useState([]);
+
+    // --- Report State ---
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [reportLoading, setReportLoading] = useState(false);
+    const [reportData, setReportData] = useState([]);
+    const [reportParams, setReportParams] = useState({
+        terapeuta: '',
+        terapeuta_nome: '',
+        dataInicial: new Date().toISOString().split('T')[0],
+        dataFinal: new Date().toISOString().split('T')[0]
+    });
+
+    // --- History Filter State ---
+    const [historyFilterCode, setHistoryFilterCode] = useState('');
+    const [historyFilterName, setHistoryFilterName] = useState('');
 
     // --- Core Form State ---
     const [formData, setFormData] = useState({
@@ -45,22 +62,46 @@ const TherapistDailyBalance = ({ session }) => {
         return `${day}/${month}/${year}`;
     };
 
-    // --- Initialization ---
-    useEffect(() => {
-        fetchClosings();
-    }, []);
-
     // --- Data Fetching ---
     const fetchClosings = async () => {
-        const { data, error } = await supabase
-            .from('therapist_closings')
-            .select('*')
-            .order('terapeuta_codigo', { ascending: true })
-            .order('data', { ascending: true })
-            .order('hora', { ascending: true });
+        try {
+            let query = supabase
+                .from('therapist_closings')
+                .select('*')
+                .order('terapeuta_codigo', { ascending: true })
+                .order('data', { ascending: true })
+                .order('hora', { ascending: true });
 
-        if (data) setClosings(data);
+            if (historyFilterCode) {
+                query = query.eq('terapeuta_codigo', parseInt(historyFilterCode));
+            }
+
+            const { data, error } = await query;
+            if (error) throw error;
+            
+            let therapistsData = [];
+            const { data: tData, error: tErr } = await supabase
+                .from('therapists')
+                .select('codigo, nome, nome_abrev');
+            if (!tErr && tData) therapistsData = tData;
+
+            const mapped = (data || []).map(c => {
+                const therapist = therapistsData.find(t => parseInt(t.codigo) === parseInt(c.terapeuta_codigo));
+                return {
+                    ...c,
+                    dataStr: formatDate(c.data),
+                    terapeuta_nome_display: therapist?.nome_abrev || therapist?.nome || c.terapeuta_nome
+                };
+            });
+            setClosings(mapped);
+        } catch (error) {
+            console.error('Erro ao buscar fechamentos:', error);
+        }
     };
+
+    useEffect(() => {
+        fetchClosings();
+    }, [historyFilterCode]);
 
     const handleSearch = async (type, term) => {
         if (!term) {
@@ -70,12 +111,12 @@ const TherapistDailyBalance = ({ session }) => {
         }
 
         setSearchMode(type);
-        let query = supabase.from('therapists').select('codigo, nome, cod_funcao, banco_caixa');
+        let query = supabase.from('therapists').select('codigo, nome, nome_abrev, cod_funcao, banco_caixa');
 
         if (!isNaN(term)) {
             query = query.eq('codigo', parseInt(term));
         } else {
-            query = query.ilike('nome', `%${term}%`);
+            query = query.or(`nome.ilike.%${term}%,nome_abrev.ilike.%${term}%`);
         }
 
         const { data } = await query.limit(10);
@@ -87,36 +128,58 @@ const TherapistDailyBalance = ({ session }) => {
             setFormData(prev => ({
                 ...prev,
                 t1_codigo: item.codigo.toString(),
-                t1_nome: item.nome,
+                t1_nome: item.nome_abrev || item.nome,
                 t1_funcao: item.cod_funcao,
                 t1_banco_caixa: item.banco_caixa || 'Não'
             }));
-        } else {
+        } else if (searchMode === 'T2') {
             setFormData(prev => ({
                 ...prev,
                 t2_codigo: item.codigo.toString(),
-                t2_nome: item.nome,
+                t2_nome: item.nome_abrev || item.nome,
                 t2_funcao: item.cod_funcao,
                 t2_banco_caixa: item.banco_caixa || 'Não'
             }));
+        } else if (searchMode === 'T3') {
+            setReportParams(prev => ({
+                ...prev,
+                terapeuta: item.codigo.toString(),
+                terapeuta_nome: item.nome_abrev || item.nome
+            }));
+        } else if (searchMode === 'T4') {
+            setHistoryFilterCode(item.codigo.toString());
+            setHistoryFilterName(item.nome_abrev || item.nome);
         }
         setResults([]);
         setSearchMode(null);
     };
 
     const fetchTherapistByCode = async (type, code) => {
-        if (!code) return;
+        if (!code) {
+            if (type === 'T1') setFormData(p => ({...p, t1_nome: '', t1_funcao: '', t1_banco_caixa: 'Não'}));
+            if (type === 'T2') setFormData(p => ({...p, t2_nome: '', t2_funcao: '', t2_banco_caixa: 'Não'}));
+            if (type === 'T3') setReportParams(p => ({...p, terapeuta_nome: ''}));
+            if (type === 'T4') {
+                setHistoryFilterCode('');
+                setHistoryFilterName('');
+            }
+            return;
+        }
         const { data } = await supabase
             .from('therapists')
-            .select('codigo, nome, cod_funcao, banco_caixa')
+            .select('nome, nome_abrev, cod_funcao, banco_caixa')
             .eq('codigo', parseInt(code))
             .single();
 
         if (data) {
             if (type === 'T1') {
-                setFormData(p => ({ ...p, t1_nome: data.nome, t1_funcao: data.cod_funcao, t1_banco_caixa: data.banco_caixa || 'Não' }));
-            } else {
-                setFormData(p => ({ ...p, t2_nome: data.nome, t2_funcao: data.cod_funcao, t2_banco_caixa: data.banco_caixa || 'Não' }));
+                setFormData(p => ({ ...p, t1_nome: data.nome_abrev || data.nome, t1_funcao: data.cod_funcao, t1_banco_caixa: data.banco_caixa || 'Não' }));
+            } else if (type === 'T2') {
+                setFormData(p => ({ ...p, t2_nome: data.nome_abrev || data.nome, t2_funcao: data.cod_funcao, t2_banco_caixa: data.banco_caixa || 'Não' }));
+            } else if (type === 'T3') {
+                setReportParams(p => ({ ...p, terapeuta_nome: data.nome_abrev || data.nome }));
+            } else if (type === 'T4') {
+                setHistoryFilterName(data.nome_abrev || data.nome);
             }
         }
     };
@@ -234,11 +297,8 @@ const TherapistDailyBalance = ({ session }) => {
             // --------------------------------
 
             alert('Fechamento gravado com sucesso!');
-            // Refresh history for the current therapist BEFORE clearing if needed
-            // or just clear but keep the grid populated for the last action
             await fetchClosings();
 
-            // Delphi cleared everything, we will too, but carefully
             setFormData(prev => ({
                 ...prev,
                 comissao: '0.00', pix: '0.00', caixinha: '0.00', ajustes: '0.00',
@@ -269,7 +329,105 @@ const TherapistDailyBalance = ({ session }) => {
             t2_codigo: '', t2_nome: '', t2_funcao: '', t2_banco_caixa: 'Não',
             observacao: ''
         }));
-        setClosings([]);
+    };
+
+    const handleGenerateReport = async () => {
+        setReportLoading(true);
+        try {
+            let query = supabase
+                .from('therapist_closings')
+                .select('*')
+                .gte('data', reportParams.dataInicial)
+                .lte('data', reportParams.dataFinal)
+                .order('data', { ascending: true })
+                .order('hora', { ascending: true });
+
+            if (reportParams.terapeuta) {
+                if (!isNaN(reportParams.terapeuta)) {
+                    query = query.eq('terapeuta_codigo', parseInt(reportParams.terapeuta));
+                } else {
+                    query = query.ilike('terapeuta_nome', `%${reportParams.terapeuta}%`);
+                }
+            }
+
+            const { data, error } = await query;
+            if (error) {
+                alert('Erro ao gerar relatório (Banco): ' + error.message);
+                return;
+            }
+
+            // GENERATE PDF
+            const doc = new jsPDF('landscape');
+            doc.setFontSize(14);
+            doc.text('Relatório de Saldo Colaborador', 14, 15);
+            doc.setFontSize(10);
+            const periodStr = `Período: ${formatDate(reportParams.dataInicial)} a ${formatDate(reportParams.dataFinal)}`;
+            const therapistStr = reportParams.terapeuta ? ` | Terapeuta: ${reportParams.terapeuta_nome || reportParams.terapeuta}` : '';
+            doc.text(periodStr + therapistStr, 14, 22);
+
+            if (data && data.length > 0) {
+                const head = [['ID', 'Data', 'Hora', 'Cód.', 'Terapeuta/Assistente', 'Cliente', 'Serviço', 'Comissão', 'Pix', 'Caixinha', 'Ajustes', 'Saldo Dia', 'Saldo Tot.', 'Obs.']];
+                
+                let totComissao = 0; let totPix = 0; let totCaixinha = 0; let totAjustes = 0;
+
+                const body = data.map(c => {
+                    totComissao += c.comissao || 0;
+                    totPix += c.pix || 0;
+                    totCaixinha += c.caixinha || 0;
+                    totAjustes += c.ajustes || 0;
+
+                    return [
+                        c.id ? String(c.id) : '',
+                        c.data ? formatDate(c.data) : '',
+                        c.hora || '',
+                        c.terapeuta_codigo ? String(c.terapeuta_codigo) : '',
+                        c.terapeuta_nome || '',
+                        c.cliente || '',
+                        c.servico || '',
+                        `R$ ${(c.comissao || 0).toFixed(2)}`,
+                        `R$ ${(c.pix || 0).toFixed(2)}`,
+                        `R$ ${(c.caixinha || 0).toFixed(2)}`,
+                        `R$ ${(c.ajustes || 0).toFixed(2)}`,
+                        `R$ ${(c.saldo_dia || 0).toFixed(2)}`,
+                        `R$ ${(c.saldo_total || 0).toFixed(2)}`,
+                        c.observacao || ''
+                    ];
+                });
+
+                body.push([
+                    '', '', '', '', '', '', 'TOTAIS:', 
+                    `R$ ${totComissao.toFixed(2)}`,
+                    `R$ ${totPix.toFixed(2)}`,
+                    `R$ ${totCaixinha.toFixed(2)}`,
+                    `R$ ${totAjustes.toFixed(2)}`,
+                    '', '', ''
+                ]);
+
+                autoTable(doc, {
+                    head: head,
+                    body: body,
+                    startY: 28,
+                    styles: { fontSize: 7, cellPadding: 1 },
+                    headStyles: { fillColor: [99, 102, 241] },
+                    didParseCell: function (dataInfo) {
+                        if (dataInfo.row.index === body.length - 1) {
+                            dataInfo.cell.styles.fontStyle = 'bold';
+                            dataInfo.cell.styles.fillColor = [241, 245, 249];
+                        }
+                    }
+                });
+            } else {
+                doc.text('Nenhum registro encontrado no período selecionado.', 14, 30);
+            }
+
+            doc.save(`Relatorio_Saldo_Colaborador_${new Date().getTime()}.pdf`);
+            setShowReportModal(false);
+        } catch (err) {
+            console.error(err);
+            alert('Erro ao gerar PDF: ' + (err.message || 'Erro inexperado.'));
+        } finally {
+            setReportLoading(false);
+        }
     };
 
     return (
@@ -283,6 +441,9 @@ const TherapistDailyBalance = ({ session }) => {
                     <button className="btn btn-primary" onClick={handleGravar} disabled={loading}>
                         <FiSave /> Gravar
                     </button>
+                    <button className="btn btn-primary" onClick={() => setShowReportModal(true)}>
+                        <FiFileText /> Relatório
+                    </button>
                     <button className="btn btn-secondary" onClick={handleLimpar}>
                         <FiPlus /> Limpar
                     </button>
@@ -294,7 +455,7 @@ const TherapistDailyBalance = ({ session }) => {
                     <div className="tdb-form-section-title">Dados do Lançamento</div>
 
                     <div className="tdb-form-row">
-                        <div className="tdb-form-group span-4">
+                        <div className="tdb-form-group span-3">
                             <label>Data Movimento</label>
                             <div className="input-with-icon">
                                 <input
@@ -302,6 +463,51 @@ const TherapistDailyBalance = ({ session }) => {
                                     value={formData.data}
                                     onChange={(e) => setFormData(p => ({ ...p, data: e.target.value }))}
                                 />
+                            </div>
+                        </div>
+                        <div className="tdb-form-group span-3 lookup-container">
+                            <label>Filtrar Histórico (Cód.)</label>
+                            <input
+                                type="text"
+                                value={historyFilterCode}
+                                onChange={e => {
+                                    setHistoryFilterCode(e.target.value);
+                                    setHistoryFilterName('');
+                                    handleSearch('T4', e.target.value);
+                                }}
+                                onBlur={(e) => fetchTherapistByCode('T4', e.target.value)}
+                                placeholder="Colaborador..."
+                            />
+                            {searchMode === 'T4' && results.length > 0 && (
+                                <div className="lookup-dropdown">
+                                    {results.map(r => (
+                                        <div key={r.codigo} className="lookup-item" onClick={() => handleSelectResult(r)}>
+                                            <span className="code">{r.codigo}</span>
+                                            <span className="name">{r.nome_abrev || r.nome}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        <div className="tdb-form-group span-6">
+                            <label>Nome (Filtro)</label>
+                            <div className="input-with-icon" style={{ position: 'relative' }}>
+                                <input 
+                                    type="text" 
+                                    value={historyFilterName} 
+                                    readOnly 
+                                    className="readonly-field" 
+                                    placeholder="Todos selecionados..."
+                                />
+                                {historyFilterCode && (
+                                     <button 
+                                         className="btn-clear-filter" 
+                                         title="Remover filtro"
+                                         onClick={() => { setHistoryFilterCode(''); setHistoryFilterName(''); }}
+                                         style={{ position:'absolute', right:10, top:8, background:'none', border:'none', color:'#ef4444', cursor:'pointer' }}>
+                                         <FiX />
+                                     </button>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -323,14 +529,14 @@ const TherapistDailyBalance = ({ session }) => {
                                     {results.map(r => (
                                         <div key={r.codigo} className="lookup-item" onClick={() => handleSelectResult(r)}>
                                             <span className="code">{r.codigo}</span>
-                                            <span className="name">{r.nome}</span>
+                                            <span className="name">{r.nome_abrev || r.nome}</span>
                                         </div>
                                     ))}
                                 </div>
                             )}
                         </div>
                         <div className="tdb-form-group span-9">
-                            <label>Nome do Terapeuta</label>
+                            <label>Nome Abreviado</label>
                             <div className="input-with-icon">
                                 <input type="text" value={formData.t1_nome} readOnly className="readonly-field" />
                             </div>
@@ -409,14 +615,14 @@ const TherapistDailyBalance = ({ session }) => {
                                             {results.map(r => (
                                                 <div key={r.codigo} className="lookup-item" onClick={() => handleSelectResult(r)}>
                                                     <span className="code">{r.codigo}</span>
-                                                    <span className="name">{r.nome}</span>
+                                                    <span className="name">{r.nome_abrev || r.nome}</span>
                                                 </div>
                                             ))}
                                         </div>
                                     )}
                                 </div>
                                 <div className="tdb-form-group span-9">
-                                    <label>Nome do Terapeuta Destino</label>
+                                    <label>Nome Abreviado (Destino)</label>
                                     <div className="input-with-icon">
                                         <input type="text" value={formData.t2_nome} readOnly className="readonly-field" />
                                     </div>
@@ -448,7 +654,9 @@ const TherapistDailyBalance = ({ session }) => {
                                     <th>Data</th>
                                     <th>Hora</th>
                                     <th>Cód.</th>
-                                    <th>Nome</th>
+                                    <th>Nome Abreviado</th>
+                                    <th>Cliente</th>
+                                    <th>Serviço</th>
                                     <th>Comissão</th>
                                     <th>Pix</th>
                                     <th>Caixinha</th>
@@ -462,7 +670,7 @@ const TherapistDailyBalance = ({ session }) => {
                             <tbody>
                                 {closings.length === 0 ? (
                                     <tr>
-                                        <td colSpan="12" className="text-center">Nenhum lançamento encontrado.</td>
+                                        <td colSpan="14" className="text-center">Nenhum lançamento encontrado.</td>
                                     </tr>
                                 ) : (
                                     closings.map((c) => (
@@ -470,7 +678,9 @@ const TherapistDailyBalance = ({ session }) => {
                                             <td>{formatDate(c.data)}</td>
                                             <td>{c.hora}</td>
                                             <td>{c.terapeuta_codigo}</td>
-                                            <td>{c.terapeuta_nome}</td>
+                                            <td>{c.terapeuta_nome_display || c.terapeuta_nome}</td>
+                                            <td>{c.cliente || '-'}</td>
+                                            <td>{c.servico || '-'}</td>
                                             <td className="text-right">R$ {c.comissao?.toFixed(2)}</td>
                                             <td className="text-right">R$ {c.pix?.toFixed(2)}</td>
                                             <td className="text-right">R$ {c.caixinha?.toFixed(2)}</td>
@@ -494,6 +704,79 @@ const TherapistDailyBalance = ({ session }) => {
                     </div>
                 </div>
             </div>
+
+            {showReportModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content report-modal">
+                        <div className="modal-header">
+                            <h2>Relatório de Saldo Colaborador</h2>
+                            <button className="btn-close" onClick={() => setShowReportModal(false)}><FiX /></button>
+                        </div>
+                        <div className="modal-body tdb-form-card" style={{ boxShadow: 'none', border: 'none', padding: '1.5rem', margin: 0 }}>
+                            <div className="tdb-form-row">
+                                <div className="tdb-form-group span-3 lookup-container">
+                                    <label>Cód. Terapeuta</label>
+                                    <input 
+                                        type="text" 
+                                        value={reportParams.terapeuta} 
+                                        onChange={e => {
+                                            setReportParams(p => ({...p, terapeuta: e.target.value, terapeuta_nome: ''}));
+                                            handleSearch('T3', e.target.value);
+                                        }}
+                                        onBlur={(e) => fetchTherapistByCode('T3', e.target.value)}
+                                        placeholder="Código..."
+                                    />
+                                    {searchMode === 'T3' && results.length > 0 && (
+                                        <div className="lookup-dropdown">
+                                            {results.map(r => (
+                                                <div key={r.codigo} className="lookup-item" onClick={() => handleSelectResult(r)}>
+                                                    <span className="code">{r.codigo}</span>
+                                                    <span className="name">{r.nome_abrev || r.nome}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="tdb-form-group span-9">
+                                    <label>Nome do Terapeuta</label>
+                                    <div className="input-with-icon">
+                                        <input 
+                                            type="text" 
+                                            value={reportParams.terapeuta_nome} 
+                                            readOnly 
+                                            className="readonly-field" 
+                                            placeholder="Todos se vazio..."
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="tdb-form-row">
+                                <div className="tdb-form-group span-6">
+                                    <label>Data Inicial</label>
+                                    <input 
+                                        type="date" 
+                                        value={reportParams.dataInicial} 
+                                        onChange={e => setReportParams(p => ({...p, dataInicial: e.target.value}))}
+                                    />
+                                </div>
+                                <div className="tdb-form-group span-6">
+                                    <label>Data Final</label>
+                                    <input 
+                                        type="date" 
+                                        value={reportParams.dataFinal} 
+                                        onChange={e => setReportParams(p => ({...p, dataFinal: e.target.value}))}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem', marginBottom: '1rem' }}>
+                                <button className="btn btn-primary" onClick={handleGenerateReport} disabled={reportLoading}>
+                                    <FiFileText /> {reportLoading ? 'Gerando...' : 'Gerar e Baixar PDF'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

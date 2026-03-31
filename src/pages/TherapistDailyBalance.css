@@ -3,6 +3,8 @@
     max-width: 1400px;
     margin: 0 auto;
     animation: fadeIn 0.4s ease-out;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 @keyframes fadeIn {
@@ -82,7 +84,7 @@
 
 .tdb-main-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 2rem;
 }
 
@@ -93,6 +95,8 @@
     padding: 1.5rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.5);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .tdb-form-section-title {
@@ -261,6 +265,7 @@ input:focus {
     overflow-x: auto;
     border-radius: 12px;
     border: 1px solid #e2e8f0;
+    width: 100%;
 }
 
 .sigma-table {
@@ -361,3 +366,33 @@ input:focus {
         gap: 1rem;
     }
 }
+
+/* Modal Setup */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.report-modal {
+    width: 90%;
+    max-width: 900px;
+    background: white;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 12px;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+.modal-header h2 { font-size: 1.25rem; font-weight: 700; color: #1e293b; margin:0; }
+.btn-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b; }
+.modal-body { padding: 1.5rem; }
