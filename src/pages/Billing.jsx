@@ -766,6 +766,7 @@ const Billing = ({ session }) => {
             alert('Faturamento gravado com sucesso!');
             handleLimpar();
             setPixTherapist(null);
+            window.scrollTo(0, 0);
         } catch (err) {
             alert('Erro ao gravar: ' + err.message);
         } finally {

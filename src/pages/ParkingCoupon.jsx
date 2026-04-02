@@ -201,7 +201,7 @@ const ParkingCoupon = ({ session }) => {
                 window.print();
                 handleLimpar();
                 setPrintData(null);
-            }, 100);
+            }, 500); // 500ms allows sufficient time for DOM to render the coupon data before print
         } else {
             // TXT File as Delphi's ImprimirEmArquivo
             const textContent = generateTextCoupon(dataToPrint);
@@ -362,33 +362,44 @@ const ParkingCoupon = ({ session }) => {
 
             {/* Thermal Coupon for Printing (Hidden on screen) */}
             {printData && (
-                <div id="thermal-coupon">
-                    <div className="coupon-header">
-                        ZEN ZEN MASSAGENS<br />
-                        CNPJ: 01.628.507/0001-68<br />
-                        Av. Ricardo Jafet 1501 - Loja 27<br />
-                        Chácara Kablin - São Paulo
+                <>
+                    <style>
+                        {`
+                        @media print {
+                            #thermal-coupon {
+                                display: block !important;
+                            }
+                        }
+                        `}
+                    </style>
+                    <div id="thermal-coupon">
+                        <div className="coupon-header">
+                            ZEN ZEN MASSAGENS<br />
+                            CNPJ: 01.628.507/0001-68<br />
+                            Av. Ricardo Jafet 1501 - Loja 27<br />
+                            Chácara Kablin - São Paulo
+                        </div>
+                        <div className="coupon-divider"></div>
+                        <div className="coupon-header">CONTROLE DE SERVICOS</div>
+                        <div className="coupon-divider"></div>
+                        <div className="coupon-info-row">
+                            <span>Data: {printData.data}</span>
+                            <span>Hora: {printData.hora}</span>
+                        </div>
+                        <div className="coupon-info-row">
+                            <span>Produto:</span>
+                            <span>{printData.produto}</span>
+                        </div>
+                        <div className="coupon-info-row text-bold">
+                            <span>Total:</span>
+                            <span>R$ {printData.valor}</span>
+                        </div>
+                        <div className="coupon-divider"></div>
+                        <div className="coupon-footer">
+                            Obrigado volte sempre!
+                        </div>
                     </div>
-                    <div className="coupon-divider"></div>
-                    <div className="coupon-header">CONTROLE DE SERVICOS</div>
-                    <div className="coupon-divider"></div>
-                    <div className="coupon-info-row">
-                        <span>Data: {printData.data}</span>
-                        <span>Hora: {printData.hora}</span>
-                    </div>
-                    <div className="coupon-info-row">
-                        <span>Produto:</span>
-                        <span>{printData.produto}</span>
-                    </div>
-                    <div className="coupon-info-row text-bold">
-                        <span>Total:</span>
-                        <span>R$ {printData.valor}</span>
-                    </div>
-                    <div className="coupon-divider"></div>
-                    <div className="coupon-footer">
-                        Obrigado volte sempre!
-                    </div>
-                </div>
+                </>
             )}
         </div>
     );

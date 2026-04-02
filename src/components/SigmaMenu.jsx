@@ -78,8 +78,8 @@ const SigmaMenu = ({ session, onNavigate, onLogout }) => {
                 { label: 'Apuração de Prêmios', target: '/relatorios/premios' },
                 { label: 'Clientes Inativos', target: '/relatorios/inativos' },
                 { label: 'Histórico Alt/Exc', target: '/relatorios/historico' },
-                { label: 'Clientes', target: '/relatorios/clientes' },
-                { label: 'Produtos', target: '/relatorios/produtos' },
+                { label: 'Clientes', target: '/relatorios/clientes-relatorio' },
+                { label: 'Produtos', target: '/relatorios/produtos-relatorio' },
                 { label: 'Tipos de Pagamento', target: '/relatorios/pagamentos' },
                 { label: 'Sumário Faturamento', target: '/relatorios/sumario-faturamento' },
                 { label: 'Auditoria', target: '/relatorios/auditoria' }

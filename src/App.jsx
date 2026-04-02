@@ -16,6 +16,8 @@ import ParkingCoupon from './pages/ParkingCoupon'
 import AuditReport from './pages/AuditReport'
 import Pontuador from './pages/Pontuador'
 import ClientTransfer from './pages/ClientTransfer'
+import ClientReport from './pages/ClientReport'
+import ProductReport from './pages/ProductReport'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 
@@ -63,6 +65,8 @@ function App() {
             case 'auditoria': return <AuditReport />;
             case 'pontuador': return <Pontuador session={session} />;
             case 'transferencia': return <ClientTransfer session={session} />;
+            case 'clientes-relatorio': return <ClientReport />;
+            case 'produtos-relatorio': return <ProductReport />;
             default: return (
                 <div style={{ padding: '2rem' }}>
                     <h1>Painel SIGMA</h1>
