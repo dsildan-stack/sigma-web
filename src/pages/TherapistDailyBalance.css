@@ -263,30 +263,54 @@ input:focus {
 
 .table-responsive {
     overflow-x: auto;
+    overflow-y: auto;
+    max-height: 450px;
     border-radius: 12px;
     border: 1px solid #e2e8f0;
     width: 100%;
+}
+
+/* Scrollbar personalizada para a tabela */
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 8px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 8px;
+}
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
 
 .sigma-table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 .sigma-table th {
     background: #f8fafc;
-    padding: 1rem;
+    padding: 0.85rem 1rem;
     font-weight: 700;
     color: #475569;
     border-bottom: 2px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    white-space: nowrap;
 }
 
 .sigma-table td {
-    padding: 1rem;
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid #f1f5f9;
     color: #1e293b;
+    white-space: nowrap;
 }
 
 .sigma-table tr:hover {

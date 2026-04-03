@@ -1409,7 +1409,7 @@ const Billing = ({ session }) => {
             {
                 showPixTherapistModal && (
                     <div className="modal-overlay">
-                        <div className="modal-content">
+                        <div className="modal-content" style={{ overflow: 'visible', paddingBottom: '2rem' }}>
                             <div className="modal-header">
                                 <h3>Selecionar Terapeuta para o PIX</h3>
                                 <button className="btn-close" onClick={() => setShowPixTherapistModal(false)}><FiX /></button>
@@ -1420,13 +1420,20 @@ const Billing = ({ session }) => {
                                     <input
                                         type="text"
                                         autoFocus
-                                        placeholder="Digite o nome..."
+                                        placeholder="Digite o nome, ou código..."
                                         onChange={(e) => handleSearch('pix_therapist', e.target.value)}
+                                        onFocus={async (e) => {
+                                            if (e.target.value === '') {
+                                                setSearchMode('pix_therapist');
+                                                const { data } = await supabase.from('therapists').select('codigo, nome, nome_abrev').limit(50);
+                                                setResults(data || []);
+                                            }
+                                        }}
                                     />
                                     {searchMode === 'pix_therapist' && results.length > 0 && (
-                                        <div className="lookup-dropdown">
+                                        <div className="lookup-dropdown" style={{ position: 'relative', top: '0', maxHeight: '250px', overflowY: 'auto', marginTop: '0.5rem', border: '1px solid #e2e8f0', boxShadow: 'none' }}>
                                             {results.map(r => (
-                                                <div key={r.codigo} className="lookup-item" onClick={() => handleSelectResult(r)}>
+                                                <div key={r.codigo} className="lookup-item" style={{ padding: '12px' }} onClick={() => handleSelectResult(r)}>
                                                     <span className="code">{r.codigo}</span>
                                                     <span className="name">{r.nome_abrev || r.nome}</span>
                                                 </div>
