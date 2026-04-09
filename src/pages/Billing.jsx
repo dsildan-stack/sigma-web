@@ -923,7 +923,7 @@ const Billing = ({ session }) => {
                     )}
 
                     <div className="form-section-title" style={{ marginTop: '2rem' }}>Serviço e Colaborador</div>
-                    <div className="form-row">
+                    <div className="form-row" style={{ position: 'relative', zIndex: searchMode === 'therapist' ? 9999 : 1 }}>
                         <div className="form-group span-2 lookup-container">
                             <label>Cód.</label>
                             <input
@@ -935,7 +935,7 @@ const Billing = ({ session }) => {
                                 }}
                             />
                             {searchMode === 'therapist' && results.length > 0 && (
-                                <div className="lookup-dropdown">
+                                <div className="lookup-dropdown" style={{ minWidth: '350px', maxHeight: '350px', overflowY: 'auto', zIndex: 100 }}>
                                     {results.map(r => (
                                         <div key={r.codigo} className="lookup-item" onClick={() => handleSelectResult(r)}>
                                             <span className="code">{r.codigo}</span>
@@ -957,7 +957,7 @@ const Billing = ({ session }) => {
                                 placeholder="Pesquisar..."
                             />
                             {searchMode === 'therapist' && results.length > 0 && (
-                                <div className="lookup-dropdown">
+                                <div className="lookup-dropdown" style={{ maxWidth: '400px', maxHeight: '350px', overflowY: 'auto', zIndex: 100 }}>
                                     {results.map(r => (
                                         <div key={r.codigo} className="lookup-item" onClick={() => handleSelectResult(r)}>
                                             <span className="code">{r.codigo}</span>
