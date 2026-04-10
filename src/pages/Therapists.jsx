@@ -63,7 +63,41 @@ const Therapists = ({ session }) => {
     };
 
     const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        let { name, value, type, checked } = e.target;
+
+        if (name === 'telefone' || name === 'celular') {
+            let v = value.replace(/\D/g, '');
+            let isCelular = name === 'celular';
+            let hasZero = v.startsWith('0');
+            let dddLen = hasZero ? 3 : 2;
+            
+            let maxLen = dddLen + (isCelular ? 9 : 8);
+            if (v.length > maxLen) v = v.substring(0, maxLen);
+            
+            if (v.length > dddLen) {
+                let ddd = v.substring(0, dddLen);
+                let rest = v.substring(dddLen);
+                let prefixLen = isCelular ? 5 : 4;
+                if (rest.length > prefixLen) {
+                    value = `(${ddd})${rest.substring(0, prefixLen)}-${rest.substring(prefixLen)}`;
+                } else {
+                    value = `(${ddd})${rest}`;
+                }
+            } else if (v.length > 0) {
+                value = `(${v}`;
+            } else {
+                value = '';
+            }
+        } else if (name === 'cep') {
+            let v = value.replace(/\D/g, '');
+            if (v.length > 8) v = v.substring(0, 8);
+            if (v.length > 5) {
+                value = `${v.substring(0, 5)}-${v.substring(5)}`;
+            } else {
+                value = v;
+            }
+        }
+
         setFormData(prev => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
@@ -244,7 +278,7 @@ const Therapists = ({ session }) => {
                 <div className="form-grid">
                     <div className="form-group sm">
                         <label>Código</label>
-                        <input type="text" name="codigo" value={formData.codigo} onChange={handleInputChange} disabled={status === 'Editar'} />
+                        <input type="text" name="codigo" value={formData.codigo} onChange={handleInputChange} disabled />
                     </div>
                     <div className="form-group xl-7">
                         <label>Nome Completo</label>
