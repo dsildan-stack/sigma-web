@@ -83,6 +83,32 @@ const Customers = ({ session }) => {
         if (data) setCustomers(data);
     };
 
+    const buscarCep = async (cep) => {
+        const cepLimpo = cep.replace(/\D/g, '');
+        if (cepLimpo.length !== 8) return;
+
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+            if (!response.ok) throw new Error('Erro na requisição');
+            const data = await response.json();
+
+            if (data.erro) {
+                alert('CEP não encontrado!');
+            } else {
+                setFormData(prev => ({
+                    ...prev,
+                    endereco: data.logradouro || '',
+                    bairro: data.bairro || '',
+                    cidade: data.localidade || '',
+                    estado: data.uf || ''
+                }));
+            }
+        } catch (error) {
+            console.error('Erro ao conectar ao serviço de CEP:', error);
+            alert(`Erro ao conectar ao serviço de CEP: ${error.message}`);
+        }
+    };
+
     const handleInputChange = (e) => {
         let { name, value, type, checked } = e.target;
 
@@ -116,6 +142,9 @@ const Customers = ({ session }) => {
                 value = `${v.substring(0, 5)}-${v.substring(5)}`;
             } else {
                 value = v;
+            }
+            if (v.length === 8) {
+                buscarCep(v);
             }
         }
 
